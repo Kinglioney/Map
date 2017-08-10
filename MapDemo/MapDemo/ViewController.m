@@ -10,14 +10,21 @@
 #import <CoreLocation/CoreLocation.h>
 #define isIOS(version) [[UIDevice currentDevice].systemVersion floatValue] >= version
 @interface ViewController ()<CLLocationManagerDelegate>
+
 @property (nonatomic, strong) CLLocationManager *locationManager;
+
+@property (nonatomic, strong) CLLocation *lastLocation;
+
+@property (weak, nonatomic) IBOutlet UIImageView *compassImageView;
+
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+    [self.locationManager startUpdatingHeading];
 }
 -(CLLocationManager *)locationManager{
     if (!_locationManager) {
@@ -37,6 +44,7 @@
             //[self.locationManager requestAlwaysAuthorization];
             //1.4 请求在前台定位授权
             [self.locationManager requestWhenInUseAuthorization];
+
 
             if(isIOS(9.0)){
              /*------------------iOS9.0+定位适配--------------------*/
@@ -68,11 +76,80 @@
 
 #pragma mark - CLLocationManagerDelegate
 
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
-    NSLog(@"定位到了");
-    //
+//获取当前设备的朝向
+-(void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+    NSLog(@"11111");
+    /*
+     ** CLHeading
+     *  trueHeading: 距离磁北方向的角度
+     *  headingAccuracy: 如果是负值，代表当前位置数据不可用
+     */
+    if(newHeading.headingAccuracy < 0) return;
+    //1、获取设备的朝向
+    CLLocationDirection angle = newHeading.magneticHeading;
+    //1.1 将角度转换为弧度
+    float radius = angle/180 * M_PI;
+    //2、设置罗盘转动
+    [UIView animateWithDuration:0.5 animations:^{
+        self.compassImageView.transform = CGAffineTransformMakeRotation(-radius);
+    }];
+
 
 }
+
+//获取用户的位置信息更新
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+    NSLog(@"定位到了");
+    //按时间排序 获取最新的一个位置
+    CLLocation *latestLocation = [locations lastObject];
+    /*
+     Coordinate : 坐标的经纬度
+     altitude   : 海拔
+     horizontalAccuracy : 如果是负值，代表当前位置数据不可用
+     verticalAccuracy   : 如果是负值，代表当前海拔数据不可用
+     cours      :  航向（0.0---359.9）
+     speed      :  速度
+     floor      :  楼层
+     distanceFromLocation : 计算两个坐标点之间的直线距离
+     */
+    if (latestLocation.horizontalAccuracy < 0) return;
+    //1、确定当前航向
+    NSInteger index = (int)latestLocation.course / 90;
+
+    NSArray *courseArr = @[@"北偏东",@"东偏南",@"南偏西",@"西偏北"];
+
+    NSString *courseStr = courseArr[index];
+
+    //2、确定偏离角度
+    NSInteger angle = (int)latestLocation.course % 90;
+    if (angle == 0) {//代表正方向
+        courseStr = [@"正" stringByAppendingString:[courseStr substringToIndex:1]];
+    }
+
+    //3、确定行走高度
+    float distance = 0;
+    if(_lastLocation){
+        distance = [latestLocation distanceFromLocation:_lastLocation];
+
+    }
+    _lastLocation = latestLocation;
+
+    NSString *noticeStr = nil;
+    if (angle) {
+        noticeStr = [NSString stringWithFormat:@"%@ %zd 度方向, 移动了 %f 米", courseStr, angle, distance];
+    }else{
+        noticeStr = [NSString stringWithFormat:@"%@ 方向, 移动了 %f 米", courseStr, distance];
+    }
+
+
+    NSLog(@"%@", noticeStr);
+
+}
+//定位失败调用
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"定位失败");
+}
+
 //当前定位授权状态发生改变的调用
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
 
