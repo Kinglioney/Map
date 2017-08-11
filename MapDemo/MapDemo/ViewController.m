@@ -78,7 +78,7 @@
 
 //获取当前设备的朝向
 -(void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-    NSLog(@"11111");
+    
     /*
      ** CLHeading
      *  trueHeading: 距离磁北方向的角度

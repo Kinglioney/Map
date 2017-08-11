@@ -10,6 +10,8 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "CustomAnnotation.h"
+
+#define kPinViewId @"kPinViewId"
 @interface MapViewController ()<MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -160,4 +162,82 @@
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     NSLog(@"%f----%f", mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
 }
+
+/**
+ *  当我们添加一个大头针数据模型时，地图就会调用该方法来获取对应的大头针视图
+ *
+ *  @param mapView  地图
+ *  @param annotation 大头针数据模型
+ *  @return 大头针视图
+ *  如果这个方法没有实现或者返回nil，系统就会使用自带的大头针视图
+ */
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+    //如果想要自定义大头针视图，要么使用MKAnnotationView,或者MKAnnotationView的子类
+    MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:kPinViewId];
+    if (!annotationView) {
+        annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kPinViewId];
+    }
+    annotationView.annotation = annotation;
+
+    //自定义大头针视图
+    //1、设置大头针的图片
+    annotationView.image = [UIImage imageNamed: @"category_1"];
+
+    //2、设置大头针弹框
+    annotationView.canShowCallout = YES;
+    //3、设置添加大头针时的偏移量
+    annotationView.centerOffset = CGPointMake(10, 10);
+
+    //4、设置弹框的偏移量
+    annotationView.calloutOffset = CGPointMake(-10, -5);
+
+    //5、设置弹框左边的视图
+    UIImageView *leftImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+    leftImageView.image = [UIImage imageNamed:@"eason"];
+    annotationView.leftCalloutAccessoryView = leftImageView;
+
+
+    return annotationView;
+}
+/**
+ *  选中大头针视图调用
+ *
+ *  @param mapView  地图
+ *  @param view 大头针视图
+ */
+-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
+    NSLog(@"选中----%@", view.annotation.title);
+}
+/**
+ *  取消选中大头针视图调用
+ *
+ *  @param mapView  地图
+ *  @param view 大头针视图
+ */
+-(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
+    NSLog(@"取消选中----%@", view.annotation.title);
+}
+/*
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+    // MKPinAnnotationView 大头针也有重复利用机制
+    MKPinAnnotationView *pinView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:kPinViewId];
+    if (!pinView) {
+        pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kPinViewId];
+    }
+    //重新设置一次大头针数据模型 防止重复利用时数据出错
+    pinView.annotation = annotation;
+
+    //设置大头针可以弹框
+    pinView.canShowCallout = YES;
+
+    //设置大头针的颜色
+    pinView.pinTintColor = [UIColor greenColor];
+
+    //设置大头针的下落动画
+    pinView.animatesDrop = YES;
+
+
+    return pinView;
+}
+ */
 @end
