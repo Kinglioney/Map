@@ -15,6 +15,10 @@
 		18D4B8571F3C34E600715329 /* MapDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4B8561F3C34E600715329 /* MapDemoTests.m */; };
 		18D4B8621F3C34E600715329 /* MapDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4B8611F3C34E600715329 /* MapDemoUITests.m */; };
 		18D4B8761F3C647E00715329 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4B8751F3C647E00715329 /* SecondViewController.m */; };
+		18D4B8791F3C6F2900715329 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4B8781F3C6F2900715329 /* ThirdViewController.m */; };
+		18D4BA071F3CE61F00715329 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4BA061F3CE61F00715329 /* MapViewController.m */; };
+		18D4BA091F3CE92B00715329 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18D4BA081F3CE92B00715329 /* MapKit.framework */; };
+		18D4BA0C1F3CF21800715329 /* CustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D4BA0B1F3CF21800715329 /* CustomAnnotation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +56,14 @@
 		18D4B8631F3C34E600715329 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18D4B8741F3C647E00715329 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		18D4B8751F3C647E00715329 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		18D4B8771F3C6F2900715329 /* ThirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
+		18D4B8781F3C6F2900715329 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
+		18D4B8F81F3CCA8A00715329 /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
+		18D4BA051F3CE61F00715329 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		18D4BA061F3CE61F00715329 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		18D4BA081F3CE92B00715329 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		18D4BA0A1F3CF21800715329 /* CustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAnnotation.h; sourceTree = "<group>"; };
+		18D4BA0B1F3CF21800715329 /* CustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAnnotation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18D4BA091F3CE92B00715329 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +122,12 @@
 				18D4B8431F3C34E600715329 /* ViewController.m */,
 				18D4B8741F3C647E00715329 /* SecondViewController.h */,
 				18D4B8751F3C647E00715329 /* SecondViewController.m */,
+				18D4B8771F3C6F2900715329 /* ThirdViewController.h */,
+				18D4B8781F3C6F2900715329 /* ThirdViewController.m */,
+				18D4BA051F3CE61F00715329 /* MapViewController.h */,
+				18D4BA061F3CE61F00715329 /* MapViewController.m */,
+				18D4BA0A1F3CF21800715329 /* CustomAnnotation.h */,
+				18D4BA0B1F3CF21800715329 /* CustomAnnotation.m */,
 				18D4B8451F3C34E600715329 /* Main.storyboard */,
 				18D4B8481F3C34E600715329 /* Assets.xcassets */,
 				18D4B84D1F3C34E600715329 /* Info.plist */,
@@ -120,6 +139,7 @@
 		18D4B83C1F3C34E600715329 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				18D4B8F81F3CCA8A00715329 /* Singleton.h */,
 				18D4B83D1F3C34E600715329 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -146,6 +166,7 @@
 		18D4B8711F3C441400715329 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				18D4BA081F3CE92B00715329 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -294,8 +315,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				18D4B8761F3C647E00715329 /* SecondViewController.m in Sources */,
+				18D4B8791F3C6F2900715329 /* ThirdViewController.m in Sources */,
 				18D4B8441F3C34E600715329 /* ViewController.m in Sources */,
+				18D4BA071F3CE61F00715329 /* MapViewController.m in Sources */,
 				18D4B8411F3C34E600715329 /* AppDelegate.m in Sources */,
+				18D4BA0C1F3CF21800715329 /* CustomAnnotation.m in Sources */,
 				18D4B83E1F3C34E600715329 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,7 +466,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 2EQSFQAAG9;
 				INFOPLIST_FILE = MapDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.MapDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -456,7 +480,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 2EQSFQAAG9;
 				INFOPLIST_FILE = MapDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.MapDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

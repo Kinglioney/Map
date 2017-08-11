@@ -4,12 +4,11 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item-->
+        <!--罗盘-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
@@ -35,16 +34,16 @@
                             <constraint firstItem="QeJ-C4-gzu" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="9ZT-lQ-Av0"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="KC7-g0-n1y"/>
+                    <tabBarItem key="tabBarItem" title="罗盘" id="KC7-g0-n1y"/>
                     <connections>
                         <outlet property="compassImageView" destination="QeJ-C4-gzu" id="M3d-ha-5Na"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="972" y="37.331334332833585"/>
+            <point key="canvasLocation" x="345" y="-904"/>
         </scene>
-        <!--Item-->
+        <!--区域位置-->
         <scene sceneID="Ztc-fV-SlV">
             <objects>
                 <viewController id="9yI-Jp-EmW" customClass="SecondViewController" sceneMemberID="viewController">
@@ -73,14 +72,129 @@
                             <constraint firstItem="5Nm-1u-J6z" firstAttribute="centerY" secondItem="8d1-cJ-GSe" secondAttribute="centerY" id="tAs-bR-Dje"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="s4b-aE-GOy"/>
+                    <tabBarItem key="tabBarItem" title="区域位置" id="s4b-aE-GOy"/>
                     <connections>
                         <outlet property="noticeLbl" destination="5Nm-1u-J6z" id="wlT-YJ-w4c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lTs-eW-TeK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="972" y="821"/>
+            <point key="canvasLocation" x="394" y="-44"/>
+        </scene>
+        <!--地图-->
+        <scene sceneID="DJU-du-vmD">
+            <objects>
+                <viewController id="pEY-Gf-YvF" customClass="MapViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="68p-0m-fRc"/>
+                        <viewControllerLayoutGuide type="bottom" id="C4w-Dg-cRZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2s8-V6-WTm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Tea-Kd-OmZ">
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Tea-Kd-OmZ" firstAttribute="leading" secondItem="2s8-V6-WTm" secondAttribute="leading" id="1HG-8N-cCN"/>
+                            <constraint firstItem="C4w-Dg-cRZ" firstAttribute="top" secondItem="Tea-Kd-OmZ" secondAttribute="bottom" id="ALn-se-lrP"/>
+                            <constraint firstAttribute="trailing" secondItem="Tea-Kd-OmZ" secondAttribute="trailing" id="RMB-6c-ydC"/>
+                            <constraint firstItem="Tea-Kd-OmZ" firstAttribute="top" secondItem="68p-0m-fRc" secondAttribute="bottom" id="yPz-Dk-Jzz"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="地图" id="Ikq-RQ-Fg3"/>
+                    <connections>
+                        <outlet property="mapView" destination="Tea-Kd-OmZ" id="Ic8-GN-LLU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4wY-Gg-tmQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="393" y="1569"/>
+        </scene>
+        <!--地理编码-->
+        <scene sceneID="doU-Xr-CKA">
+            <objects>
+                <viewController id="eLc-2O-Mak" customClass="ThirdViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nGN-90-FCY"/>
+                        <viewControllerLayoutGuide type="bottom" id="2u0-dK-QLG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9nk-mC-qUY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="I7t-MT-ymE">
+                                <rect key="frame" x="67.5" y="174.5" width="240.5" height="318.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="详细地址" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zL8-Ux-xe2">
+                                        <rect key="frame" x="0.0" y="0.0" width="240.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rFN-bR-o6H">
+                                        <rect key="frame" x="0.0" y="40.5" width="240.5" height="128"/>
+                                        <color key="backgroundColor" red="1" green="0.64420240949999996" blue="0.26882940910000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="经度" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Io-v3-wV5">
+                                        <rect key="frame" x="0.0" y="188.5" width="240.5" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="纬度" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QSc-3d-9t0">
+                                        <rect key="frame" x="0.0" y="238.5" width="240.5" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="atC-Vx-RDy">
+                                        <rect key="frame" x="0.0" y="288.5" width="240.5" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e6U-jU-dMB">
+                                                <rect key="frame" x="0.0" y="0.0" width="110.5" height="30"/>
+                                                <state key="normal" title="地理编码"/>
+                                                <connections>
+                                                    <action selector="geoCoder:" destination="eLc-2O-Mak" eventType="touchUpInside" id="pqj-6a-SJH"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BeE-nZ-jtv">
+                                                <rect key="frame" x="130.5" y="0.0" width="110" height="30"/>
+                                                <state key="normal" title="反地理编码"/>
+                                                <connections>
+                                                    <action selector="reverseGeoCoder:" destination="eLc-2O-Mak" eventType="touchUpInside" id="BQ2-Jo-B1r"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240.5" id="JGu-eR-WjD"/>
+                                    <constraint firstAttribute="height" constant="318.5" id="rzA-gB-qiT"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="I7t-MT-ymE" firstAttribute="centerX" secondItem="9nk-mC-qUY" secondAttribute="centerX" id="Qm8-tS-Xeh"/>
+                            <constraint firstItem="I7t-MT-ymE" firstAttribute="centerY" secondItem="9nk-mC-qUY" secondAttribute="centerY" id="u5g-Eu-rxY"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="地理编码" id="6K5-qv-Kyq"/>
+                    <connections>
+                        <outlet property="addressTextView" destination="rFN-bR-o6H" id="pAa-lp-9PH"/>
+                        <outlet property="latitudeTF" destination="1Io-v3-wV5" id="bSL-cA-Vef"/>
+                        <outlet property="longitudeTF" destination="QSc-3d-9t0" id="LX1-rg-wnt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ynt-wG-Xmm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="393" y="775"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="GjU-ko-mv5">
@@ -88,17 +202,20 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="6RV-wh-xGQ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="5la-Mg-ql0">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Tn3-IZ-dQJ"/>
                         <segue destination="9yI-Jp-EmW" kind="relationship" relationship="viewControllers" id="s6P-2H-jCX"/>
+                        <segue destination="eLc-2O-Mak" kind="relationship" relationship="viewControllers" id="7qU-Uy-Iya"/>
+                        <segue destination="pEY-Gf-YvF" kind="relationship" relationship="viewControllers" id="RTU-fL-Oz6"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KNT-XL-JVs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-649" y="279"/>
+            <point key="canvasLocation" x="-1574" y="76"/>
         </scene>
     </scenes>
     <resources>
