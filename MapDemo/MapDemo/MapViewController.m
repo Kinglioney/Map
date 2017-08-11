@@ -42,8 +42,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     UIBarButtonItem *rightBarButtonItem1 = [[UIBarButtonItem alloc] initWithTitle:@"绘制轨迹" style:UIBarButtonItemStylePlain target:self action:@selector(startNav)];
-    
+     UIBarButtonItem *rightBarButtonItem1 = [[UIBarButtonItem alloc] initWithTitle:@"绘制轨迹" style:UIBarButtonItemStylePlain target:self action:@selector(startDrawLine)];
+
     UIBarButtonItem *rightBarButtonItem2 = [[UIBarButtonItem alloc] initWithTitle:@"开始导航" style:UIBarButtonItemStylePlain target:self action:@selector(startNav)];
     self.navigationItem.rightBarButtonItems = @[rightBarButtonItem1,rightBarButtonItem2];
 
@@ -113,8 +113,13 @@
             NSLog(@"%@-----%@", placemark.locality, placemark.name);
         }
     }];
+//  添加圆形覆盖层
+//    MKCircle *circle = [MKCircle circleWithCenterCoordinate:self.mapView.centerCoordinate radius:1000000];
+//    [self.mapView addOverlay:circle];
 }
-
+-(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    //[self.mapView removeAnnotations:self.mapView.annotations];
+}
 #pragma mark - 添加大头针的方法
 -(CustomAnnotation *)addAnnotationWithCoordinate:(CLLocationCoordinate2D)coordinate Title:(NSString *)title SubTitle:(NSString *)subTitle{
     // 1. 创建大头针数据模型
@@ -145,10 +150,24 @@
         }
     }];
 
-
-
 }
+#pragma mark - 开始绘制轨迹
+-(void)startDrawLine{
+    [self.geoCoder geocodeAddressString:@"深圳" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (!error) {
+            CLPlacemark *beginclPL = [placemarks firstObject];
+            [self.geoCoder geocodeAddressString:@"北京" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+                if (!error) {
+                    CLPlacemark *endclPL = [placemarks firstObject];
 
+                    [self beginDrawWithBeginPL: beginclPL endPL:endclPL];
+                }
+            }];
+
+
+        }
+    }];
+}
 #pragma mark - 根据起点和终点进行导航
 -(void) beginNavWithBeginPL:(CLPlacemark *)beginclPL endPL:(CLPlacemark *)endclPL{
     //存放起点和终点
@@ -211,14 +230,96 @@
                 NSLog(@"成功获取导航信息");
                 [response.routes enumerateObjectsUsingBlock:^(MKRoute * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     NSLog(@"路线名称---%@ 距离----%f", obj.name, obj.distance);
+
                 [obj.steps enumerateObjectsUsingBlock:^(MKRouteStep * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSLog(@"行走提示: %@", obj.instructions);
+
+
+
+
                 }];
             }];
         }
     }];
-}
 
+
+}
+#pragma mark - 根据起点和终点进行绘制导航路线
+-(void) beginDrawWithBeginPL:(CLPlacemark *)beginclPL endPL:(CLPlacemark *)endclPL{
+    //存放起点和终点
+    //1、创建起点信息
+    MKPlacemark *beginPL = [[MKPlacemark alloc] initWithPlacemark:beginclPL];
+    MKMapItem *beginItem = [[MKMapItem alloc] initWithPlacemark:beginPL];
+
+    //2、创建起点信息
+    MKPlacemark *endPL = [[MKPlacemark alloc] initWithPlacemark:endclPL];
+    MKMapItem *endItem = [[MKMapItem alloc] initWithPlacemark:endPL];
+
+    /*
+    NSArray *items = @[beginItem, endItem];
+
+    //启动参数设置: 地图类型、导航模式
+    NSDictionary *dic = @{
+                          MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving,
+                          MKLaunchOptionsMapTypeKey : @(MKMapTypeStandard),
+                          MKLaunchOptionsShowsTrafficKey : @(YES)
+
+                          };
+
+    //调用系统的API进行导航
+    [MKMapItem openMapsWithItems:items launchOptions:dic];
+     */
+
+    /*********************************获取导航信息********************/
+    // 创建一个获取导航数据信息的请求
+    MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+    request.source = beginItem;
+    request.destination = endItem;
+    // 创建一个获取导航路线的对象
+    MKDirections *direction = [[MKDirections alloc] initWithRequest:request];
+    // 使用导航路线对象, 开始请求, 获取导航路线信息数据
+    /**
+     *  MKDirectionsResponse
+     routes : 路线数组 <MKRoute>
+     */
+
+    /**
+     *  MKRoute
+     name : 路线名称
+     advisoryNotices : 警告信息
+     distance : 路线距离
+     expectedTravelTime : 预期时间
+     transportType : 通行方式
+     polyline : 几何路线的数据模型
+     steps : 行走的步骤 <MKRouteStep.
+     */
+
+    /**
+     *  MKRouteStep
+     *  instructions  行走提示
+     *  notice : 警告
+     *  polyline : 几何路线数据模型
+     *  distance : 距离
+     */
+    [direction calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * _Nullable response, NSError * _Nullable error) {
+        if(!error){
+            NSLog(@"成功获取导航信息");
+            [response.routes enumerateObjectsUsingBlock:^(MKRoute * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSLog(@"路线名称---%@ 距离----%f", obj.name, obj.distance);
+                //获取路线的数据模型
+                [self.mapView addOverlay:obj.polyline];
+
+                [obj.steps enumerateObjectsUsingBlock:^(MKRouteStep * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    NSLog(@"行走提示: %@", obj.instructions);
+
+                }];
+            }];
+        }
+    }];
+    
+
+
+}
 #pragma mark - MKMapViewDelegate
 /**
  *  当地图获取到用户位置时调用
@@ -280,6 +381,7 @@
 
     //2、设置大头针弹框
     annotationView.canShowCallout = YES;
+
     //3、设置添加大头针时的偏移量
     annotationView.centerOffset = CGPointMake(10, 10);
 
@@ -312,6 +414,32 @@
 -(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
     NSLog(@"取消选中----%@", view.annotation.title);
 }
+/**
+ *  当我们添加一个覆盖层数据模型时，地图就会调用该方法来查找对应的图层渲染层
+ *
+ *  @param mapView  地图
+ *  @param overlay  覆盖层的数据模型
+ *  @return 覆盖层的渲染层
+ *  如果这个方法没有实现或者返回nil，系统就会使用自带的大头针视图
+ */
+-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
+    //线条轨迹
+    MKPolylineRenderer *render = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+    render.lineWidth = 10.0;
+    render.strokeColor = [UIColor redColor];
+
+    //圆圈覆盖层
+//    MKCircleRenderer *render = [[MKCircleRenderer alloc]initWithOverlay:overlay];
+//    render.fillColor = [UIColor cyanColor];
+//    render.alpha = 0.5;
+
+
+    return render;
+}
+
+
+
+
 /*
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
     // MKPinAnnotationView 大头针也有重复利用机制
