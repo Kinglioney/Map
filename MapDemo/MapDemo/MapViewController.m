@@ -42,6 +42,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     UIBarButtonItem *rightBarButtonItem1 = [[UIBarButtonItem alloc] initWithTitle:@"绘制轨迹" style:UIBarButtonItemStylePlain target:self action:@selector(startNav)];
+    
+    UIBarButtonItem *rightBarButtonItem2 = [[UIBarButtonItem alloc] initWithTitle:@"开始导航" style:UIBarButtonItemStylePlain target:self action:@selector(startNav)];
+    self.navigationItem.rightBarButtonItems = @[rightBarButtonItem1,rightBarButtonItem2];
+
+    /*********************地图属性的设置*******************************/
     //设置代理
     self.mapView.delegate = self;
     /**
@@ -98,6 +104,7 @@
 
     //4、地理反编码
     CLLocation *location = [[CLLocation alloc]initWithLatitude:center.latitude longitude:center.longitude];
+
     [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (!error) {
             CLPlacemark *placemark = [placemarks firstObject];
@@ -121,8 +128,96 @@
     return annotation;
 }
 
+#pragma mark - 开始导航
+-(void)startNav{
+
+    [self.geoCoder geocodeAddressString:@"深圳" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (!error) {
+             CLPlacemark *beginclPL = [placemarks firstObject];
+            [self.geoCoder geocodeAddressString:@"北京" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+                if (!error) {
+                    CLPlacemark *endclPL = [placemarks firstObject];
+                    [self beginNavWithBeginPL: beginclPL endPL:endclPL];
+                }
+            }];
 
 
+        }
+    }];
+
+
+
+}
+
+#pragma mark - 根据起点和终点进行导航
+-(void) beginNavWithBeginPL:(CLPlacemark *)beginclPL endPL:(CLPlacemark *)endclPL{
+    //存放起点和终点
+    //1、创建起点信息
+    MKPlacemark *beginPL = [[MKPlacemark alloc] initWithPlacemark:beginclPL];
+    MKMapItem *beginItem = [[MKMapItem alloc] initWithPlacemark:beginPL];
+
+    //2、创建起点信息
+    MKPlacemark *endPL = [[MKPlacemark alloc] initWithPlacemark:endclPL];
+    MKMapItem *endItem = [[MKMapItem alloc] initWithPlacemark:endPL];
+
+
+    NSArray *items = @[beginItem, endItem];
+
+    //启动参数设置: 地图类型、导航模式
+    NSDictionary *dic = @{
+                          MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving,
+                          MKLaunchOptionsMapTypeKey : @(MKMapTypeStandard),
+                          MKLaunchOptionsShowsTrafficKey : @(YES)
+
+                          };
+
+    //调用系统的API进行导航
+    [MKMapItem openMapsWithItems:items launchOptions:dic];
+
+
+    /*********************************获取导航信息********************/
+    // 创建一个获取导航数据信息的请求
+    MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+    request.source = beginItem;
+    request.destination = endItem;
+    // 创建一个获取导航路线的对象
+    MKDirections *direction = [[MKDirections alloc] initWithRequest:request];
+    // 使用导航路线对象, 开始请求, 获取导航路线信息数据
+    /**
+     *  MKDirectionsResponse
+        routes : 路线数组 <MKRoute>
+     */
+    
+    /**
+     *  MKRoute
+        name : 路线名称
+        advisoryNotices : 警告信息
+        distance : 路线距离
+        expectedTravelTime : 预期时间
+        transportType : 通行方式
+        polyline : 几何路线的数据模型
+        steps : 行走的步骤 <MKRouteStep.
+     */
+
+    /**
+     *  MKRouteStep
+     *  instructions  行走提示
+     *  notice : 警告
+     *  polyline : 几何路线数据模型
+     *  distance : 距离
+     */
+    [direction calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * _Nullable response, NSError * _Nullable error) {
+        if(!error){
+                NSLog(@"成功获取导航信息");
+                [response.routes enumerateObjectsUsingBlock:^(MKRoute * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    NSLog(@"路线名称---%@ 距离----%f", obj.name, obj.distance);
+                [obj.steps enumerateObjectsUsingBlock:^(MKRouteStep * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSLog(@"行走提示: %@", obj.instructions);
+                }];
+            }];
+        }
+    }];
+}
 
 #pragma mark - MKMapViewDelegate
 /**

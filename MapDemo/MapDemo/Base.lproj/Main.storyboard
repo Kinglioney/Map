@@ -81,7 +81,7 @@
             </objects>
             <point key="canvasLocation" x="394" y="-44"/>
         </scene>
-        <!--地图-->
+        <!--Map View Controller-->
         <scene sceneID="DJU-du-vmD">
             <objects>
                 <viewController id="pEY-Gf-YvF" customClass="MapViewController" sceneMemberID="viewController">
@@ -94,7 +94,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Tea-Kd-OmZ">
-                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -105,14 +105,14 @@
                             <constraint firstItem="Tea-Kd-OmZ" firstAttribute="top" secondItem="68p-0m-fRc" secondAttribute="bottom" id="yPz-Dk-Jzz"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="地图" id="Ikq-RQ-Fg3"/>
+                    <navigationItem key="navigationItem" id="5BY-sn-bSY"/>
                     <connections>
                         <outlet property="mapView" destination="Tea-Kd-OmZ" id="Ic8-GN-LLU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4wY-Gg-tmQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="393" y="1569"/>
+            <point key="canvasLocation" x="1332" y="1568.3658170914543"/>
         </scene>
         <!--地理编码-->
         <scene sceneID="doU-Xr-CKA">
@@ -210,12 +210,31 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Tn3-IZ-dQJ"/>
                         <segue destination="9yI-Jp-EmW" kind="relationship" relationship="viewControllers" id="s6P-2H-jCX"/>
                         <segue destination="eLc-2O-Mak" kind="relationship" relationship="viewControllers" id="7qU-Uy-Iya"/>
-                        <segue destination="pEY-Gf-YvF" kind="relationship" relationship="viewControllers" id="RTU-fL-Oz6"/>
+                        <segue destination="I2h-Wo-R9r" kind="relationship" relationship="viewControllers" id="RTU-fL-Oz6"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KNT-XL-JVs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1574" y="76"/>
+        </scene>
+        <!--地图-->
+        <scene sceneID="faJ-zb-b5w">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="I2h-Wo-R9r" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="地图" id="Ikq-RQ-Fg3"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dOM-dO-W81">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="pEY-Gf-YvF" kind="relationship" relationship="rootViewController" id="77q-cQ-FcM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Daa-Nz-9IF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="392.80000000000001" y="1568.3658170914543"/>
         </scene>
     </scenes>
     <resources>
